@@ -14,3 +14,8 @@ Implementation of custom Windows Desktop Widgets.
 
 - Shows stats about CPU and RAM usage.
 - Rainmeter default (visually modified)
+
+### Network Widget
+
+- Shows stats about network usage.
+- Rainmeter default (visually modified)
