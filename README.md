@@ -19,3 +19,8 @@ Implementation of custom Windows Desktop Widgets.
 
 - Shows stats about network usage.
 - Rainmeter default (visually modified)
+
+### Clock Widget
+
+- Shows time.
+- Rainmeter default (visually modified)
