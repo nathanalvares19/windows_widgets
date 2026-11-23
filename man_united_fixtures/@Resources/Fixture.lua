@@ -235,13 +235,30 @@ function Refresh()
     end
 end
 
+local function crestKey(name)
+    return (name:lower():gsub('&amp;', 'and'):gsub('&', 'and'):gsub('[^a-z0-9]', ''))
+end
+
 function Initialize()
-    local ok, result = pcall(dofile, SKIN:GetVariable('CURRENTPATH') .. '@Resources\\Teams.lua')
-    if ok and type(result) == 'table' then
-        crestIds = result
+    local resources = SKIN:GetVariable('CURRENTPATH') .. '@Resources\\'
+    local ok, clubs = pcall(dofile, resources .. 'ClubCrests.lua')
+    crestIds = {}
+    if ok and type(clubs) == 'table' then
+        for id, names in pairs(clubs) do
+            for _, name in ipairs(names) do
+                crestIds[crestKey(name)] = 'Clubs\\' .. id
+            end
+        end
     else
-        crestIds = {}
-        log('could not load team crest list; using initials', 'Warning')
+        log('could not load bundled club crests', 'Warning')
+    end
+
+    -- Older installations can also have a personal list pointing to images in Logos.
+    local hasCustom, custom = pcall(dofile, resources .. 'Teams.lua')
+    if hasCustom and type(custom) == 'table' then
+        for key, id in pairs(custom) do
+            crestIds[key] = id
+        end
     end
     Refresh()
 end
@@ -330,8 +347,7 @@ end
 
 local function crestId(name)
     if not name then return nil end
-    local key = name:lower():gsub('&amp;', 'and'):gsub('&', 'and'):gsub('[^a-z0-9]', '')
-    return crestIds[key]
+    return crestIds[crestKey(name)]
 end
 
 function GetTeamName(side)
@@ -339,7 +355,7 @@ function GetTeamName(side)
 end
 
 function GetTeamLogo(side)
-    local id = crestId(boardTeam(side)) or 'blank'
+    local id = crestId(boardTeam(side)) or 'Clubs\\blank'
     return SKIN:GetVariable('CURRENTPATH') .. '@Resources\\Logos\\' .. id .. '.png'
 end
 
