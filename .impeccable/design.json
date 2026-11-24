@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-24T00:00:00Z",
+  "title": "Design System: United Matchday Ticket",
+  "extensions": {
+    "scope": "Man United fixtures widget only (man_united_fixtures/UnitedMatchV2.ini). System, network and clock widgets are excluded.",
+    "colorMeta": {
+      "united-red": { "role": "primary", "displayName": "United Red", "canonical": "218,41,28", "tonalRamp": ["#3d0c08", "#661410", "#8f1c15", "#b8231a", "#da291c", "#e8645a", "#f2a39d", "#fadedb"] },
+      "ticket-paper": { "role": "neutral", "displayName": "Ticket Paper", "canonical": "250,250,248", "tonalRamp": ["#262625", "#4a4a48", "#70706d", "#969692", "#bcbcb8", "#dadad6", "#ededea", "#fafaf8"] },
+      "thermal-ink": { "role": "neutral", "displayName": "Thermal Ink", "canonical": "20,20,20", "tonalRamp": ["#141414", "#2b2b2b", "#454545", "#5f5f5f", "#7a7a7a", "#a0a0a0", "#c8c8c8", "#ededed"] },
+      "small-print-grey": { "role": "neutral", "displayName": "Small-Print Grey", "canonical": "105,105,105", "tonalRamp": ["#262626", "#3d3d3d", "#525252", "#696969", "#858585", "#a3a3a3", "#c4c4c4", "#e6e6e6"] },
+      "perforation-grey": { "role": "neutral", "displayName": "Perforation Grey", "canonical": "150,150,146", "tonalRamp": ["#2a2a29", "#45453f", "#62625f", "#7d7d79", "#969692", "#b3b3b0", "#d1d1ce", "#ededeb"] },
+      "stub-white": { "role": "neutral", "displayName": "Stub White", "canonical": "255,255,255", "tonalRamp": ["#262626", "#474747", "#6b6b6b", "#8f8f8f", "#b3b3b3", "#d4d4d4", "#ededed", "#ffffff"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Opponent", "purpose": "Opponent name; 30pt, 24pt at 12-15 chars, 20pt above (GetOpponentSize)." },
+      "headline": { "displayName": "Stub Day", "purpose": "Day-of-month number on the stub." },
+      "title": { "displayName": "Kickoff", "purpose": "Kickoff time, 24h or TBC." },
+      "body": { "displayName": "United Row", "purpose": "Man United in the opponent's exact style and size, under a v/at connector set in the name column." },
+      "label": { "displayName": "Fine Print", "purpose": "Issuer line, stub weekday and month; uppercase, character spacing 0.6. Countdown uses it at 10pt." }
+    },
+    "shadows": [],
+    "strokes": [
+      { "name": "sheet-edge", "value": "1px rgba(0,0,0,40/255)", "purpose": "Separates the ticket from the wallpaper." },
+      { "name": "body-hairline", "value": "1px rgba(0,0,0,28/255), x 28-240 at y 138", "purpose": "Closes the body above the issuer line." },
+      { "name": "perforation", "value": "2px perforation-grey, dashes 0.1/3.5, round caps, x 260 y 22-162", "purpose": "Punched tear line between body and stub." }
+    ],
+    "motion": []
+  },
+  "components": [
+    {
+      "name": "Ticket",
+      "kind": "card",
+      "refersTo": "ticket-body",
+      "description": "The full ticket at rest: body with opponent row, connector, United row, hairline and issuer line; transparent stub.",
+      "html": "<div class=\"ds-ticket\"><div class=\"ds-body\"><div class=\"ds-opp\">Sporting</div><div class=\"ds-small\">v</div><div class=\"ds-opp\">Man United</div><hr class=\"ds-hair\"><div class=\"ds-issuer\">UEFA CHAMPIONS LEAGUE  /  AWAY</div></div><div class=\"ds-stub\"><div class=\"ds-small\">THU</div><div class=\"ds-day\">26</div><div class=\"ds-small\">NOV</div><div class=\"ds-ko\">01:30</div><div class=\"ds-cd\">IN 2 DAYS</div></div></div>",
+      "css": ".ds-ticket{display:flex;width:344px;height:168px;background:rgb(250,250,248);color:rgb(20,20,20);border:1px solid rgba(0,0,0,.16);border-radius:6px;font-family:Barlow,sans-serif;overflow:hidden}.ds-body{width:232px;padding:22px 20px 10px 28px;display:flex;flex-direction:column}.ds-opp{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30pt;line-height:1}.ds-line{font-weight:500;font-size:10pt;margin-top:12px}.ds-hair{border:0;border-top:1px solid rgba(0,0,0,.11);margin:auto 0 8px}.ds-issuer{color:rgb(218,41,28);font-weight:600;font-size:8pt;letter-spacing:.6px;white-space:pre}.ds-stub{flex:1;border-left:2px dotted rgb(150,150,146);display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:12px 0}.ds-small{color:rgb(105,105,105);font-weight:600;font-size:8pt;letter-spacing:.6px}.ds-day{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24pt;line-height:1}.ds-ko{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18pt;line-height:1}.ds-cd{font-weight:600;font-size:10pt;letter-spacing:.6px}"
+    },
+    {
+      "name": "Matchday Stub",
+      "kind": "custom",
+      "refersTo": "ticket-stub-matchday",
+      "description": "The stub on matchday: United red fill, all text white.",
+      "html": "<div class=\"ds-mstub\"><div class=\"ds-msmall\">THU</div><div class=\"ds-mday\">26</div><div class=\"ds-msmall\">NOV</div><div class=\"ds-mko\">01:30</div><div class=\"ds-msmall\">TODAY</div></div>",
+      "css": ".ds-mstub{width:92px;height:168px;background:rgb(218,41,28);color:#fff;border-radius:0 6px 6px 0;display:flex;flex-direction:column;align-items:center;justify-content:space-around;padding:12px 0;font-family:Barlow,sans-serif}.ds-msmall{font-weight:600;font-size:8pt;letter-spacing:.6px}.ds-mday{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:24pt;line-height:1}.ds-mko{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:18pt;line-height:1}"
+    },
+    {
+      "name": "Issuer Line",
+      "kind": "custom",
+      "refersTo": "issuer-line",
+      "description": "Competition and home/away in red fine print, closing the body.",
+      "html": "<div class=\"ds-iss\">PREMIER LEAGUE  /  HOME</div>",
+      "css": ".ds-iss{color:rgb(218,41,28);font-family:Barlow,sans-serif;font-weight:600;font-size:8pt;letter-spacing:.6px;white-space:pre}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Matchday Ticket",
+    "overview": "The next fixture is a printed ticket: white stock, black thermal print, one line of club red. The body names the match; the stub, behind a punched tear line, holds when. It refuses the centred crest-time-crest card the category defaults to.\n\nThe surface is quiet and paper-flat so it sits on the wallpaper without competing. Hierarchy comes from type size and the body/stub split, not from boxes, tiles or colour fields. Red is rationed; it appears only on the issuer line, and across the whole stub on matchday.",
+    "keyCharacteristics": [
+      "One sheet of ticket stock with two semicircular perforation notches.",
+      "Body left (who and where), stub right (when), split by a dotted tear line.",
+      "Condensed bold print for the match, small tracked caps for the fine print.",
+      "Red as the issuer's mark, never decoration.",
+      "Matchday inverts the stub to solid red."
+    ],
+    "rules": [
+      { "name": "The Issuer's Mark Rule", "body": "Red is the issuing club's ink. It prints one line of the body and, on matchday, the whole stub; it never fills a tile, pill or highlight.", "section": "colors" },
+      { "name": "The Matchday Inversion Rule", "body": "On the day of the match the stub fills red and its text turns white (GetStubFill/Ink/Sub). This is the only state change in the system.", "section": "colors" },
+      { "name": "The Printed Fine Print Rule", "body": "Small text is uppercase, tracked 0.6, Barlow 600. Big text is Barlow Condensed. There is no third family.", "section": "typography" }
+    ],
+    "dos": [
+      "Do keep red to the issuer line and the matchday stub.",
+      "Do print the opponent as the largest thing on the ticket, stepping 30/24/20pt by name length.",
+      "Do keep the perforation as round punched dots between two notches.",
+      "Do use only the bundled Barlow and Barlow Condensed faces.",
+      "Do show TBC for date-only fixtures and keep every field clipped to its box."
+    ],
+    "donts": [
+      "Don't add tiles, pills, glows or shadows to the ticket.",
+      "Don't centre the layout into a crest-time-crest card.",
+      "Don't add extra labels or boxes; each line on the ticket carries data.",
+      "Don't apply this system to the system, network or clock widgets."
+    ]
+  }
+}

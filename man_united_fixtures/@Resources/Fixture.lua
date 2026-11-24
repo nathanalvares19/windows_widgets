@@ -401,6 +401,100 @@ function GetBoardDateTime()
     return date .. '  -  ' .. GetBoardTime()
 end
 
+-- "LIVE", "TODAY", "TOMORROW", "IN 4 DAYS" (by local calendar day)
+function GetCountdown()
+    local ev = current()
+    if not ev then return '' end
+    local now = os.time()
+    if ev.hasTime and ev.epoch <= now then return 'LIVE' end
+    local key = ev.hasTime and os.date('%Y%m%d', ev.epoch) or ev.dateKey
+    local t = os.date('*t', now)
+    local days = daysFromCivil(tonumber(key:sub(1, 4)), tonumber(key:sub(5, 6)), tonumber(key:sub(7, 8)))
+        - daysFromCivil(t.year, t.month, t.day)
+    if days <= 0 then return 'TODAY' end
+    if days == 1 then return 'TOMORROW' end
+    return 'IN ' .. days .. ' DAYS'
+end
+
+-- ===== Ticket layout getters =====
+
+local function oppSide()
+    local ev = current()
+    return (ev and ev.venue == 'H') and 'away' or 'home'
+end
+
+local function matchday()
+    local c = GetCountdown()
+    return c == 'TODAY' or c == 'LIVE'
+end
+
+-- Conventional short names so the lead fact never clips.
+local SHORT = {
+    ['nottingham forest'] = 'Forest', ['wolverhampton wanderers'] = 'Wolves', ['wolverhampton'] = 'Wolves',
+    ['brighton & hove albion'] = 'Brighton', ['brighton and hove albion'] = 'Brighton',
+    ['crystal palace'] = 'Palace', ['tottenham hotspur'] = 'Spurs', ['tottenham'] = 'Spurs',
+    ['west ham united'] = 'West Ham', ['newcastle united'] = 'Newcastle', ['manchester city'] = 'Man City',
+    ['leicester city'] = 'Leicester', ['afc bournemouth'] = 'Bournemouth', ['sheffield united'] = 'Sheffield Utd',
+    ['paris saint-germain'] = 'PSG', ['paris saint germain'] = 'PSG', ['eintracht frankfurt'] = 'Frankfurt',
+    ['bayer leverkusen'] = 'Leverkusen', ['borussia dortmund'] = 'Dortmund', ['bayern munich'] = 'Bayern',
+    ['atletico madrid'] = 'Atletico', ['olympique lyonnais'] = 'Lyon', ['olympique de marseille'] = 'Marseille',
+    ['borussia monchengladbach'] = 'Gladbach', ['internazionale'] = 'Inter', ['inter milan'] = 'Inter',
+}
+
+function GetOpponentName()
+    local ev = current()
+    if not ev then return GetKickoff() end
+    return SHORT[ev.opponent:lower()] or ev.opponent
+end
+
+-- shortcut: bands count characters (~15px/char at 30pt in a 170px box), not measured width; upgrade to GetW() measuring if an unmapped 18+ char name ever clips.
+function GetOpponentSize()
+    local n = #GetOpponentName()
+    if n <= 11 then return 30 end
+    if n <= 13 then return 24 end
+    return 20
+end
+
+function GetIssuer()
+    local ev = current()
+    local label = GetBoardLabel():upper()
+    if ev and ev.venue then label = label .. '  /  ' .. (ev.venue == 'H' and 'HOME' or 'AWAY') end
+    return label
+end
+
+function GetOpponentLogo() return GetTeamLogo(oppSide()) end
+function GetOpponentInitials() return GetTeamInitials(oppSide()) end
+function GetUnitedLogo() return GetTeamLogo(oppSide() == 'home' and 'away' or 'home') end
+
+-- Rows read top to bottom: "Sporting v Manchester United" away, "Sporting at Manchester United" at home.
+function GetConnector()
+    local ev = current()
+    if not ev then return '' end
+    return ev.venue == 'H' and 'at' or 'v'
+end
+
+-- Short form so it can share the opponent's size (10 chars always fits the 30pt band).
+function GetUnitedName()
+    return current() and 'Man United' or ''
+end
+
+-- Stub pieces: weekday, day number, month, kickoff (24h)
+function GetStub(part)
+    local ev = current()
+    if not ev then return part == 'day' and '--' or '' end
+    local bang = ev.hasTime and '' or '!'
+    if part == 'wday' then return os.date(bang .. '%a', ev.epoch):upper() end
+    if part == 'day' then return tostring(tonumber(os.date(bang .. '%d', ev.epoch))) end
+    if part == 'month' then return os.date(bang .. '%b', ev.epoch):upper() end
+    if part == 'time' then return ev.hasTime and os.date('%H:%M', ev.epoch) or 'TBC' end
+    return ''
+end
+
+-- The stub inverts to United red on matchday.
+function GetStubFill() return matchday() and '218,41,28,255' or '0,0,0,0' end
+function GetStubInk() return matchday() and '255,255,255' or '20,20,20' end
+function GetStubSub() return matchday() and '255,255,255' or '105,105,105' end
+
 function GetDisplayTeamName(side)
     local name = GetTeamName(side)
     return name:gsub("%s+", "\n")
