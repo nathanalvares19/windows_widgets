@@ -24,3 +24,9 @@ Implementation of custom Windows Desktop Widgets.
 
 - Shows time.
 - Rainmeter default (visually modified)
+
+### Calendar Widget
+
+- Shows today's Google Calendar events as a departure board.
+- Uses Lua to parse the calendar's iCal feed, including recurring events.
+- Setup: copy `calendar_widget/Feeds.example.inc` to `Feeds.inc` and paste your Google Calendar *Secret address in iCal format* (Settings and sharing > Integrate calendar) as `GoogleURL`.
