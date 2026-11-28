@@ -27,6 +27,6 @@ Implementation of custom Windows Desktop Widgets.
 
 ### Calendar Widget
 
-- Shows today's Google Calendar events as a departure board.
+- Shows today's Apple Calendar events as a departure board.
 - Uses Lua to parse the calendar's iCal feed, including recurring events.
-- Setup: copy `calendar_widget/Feeds.example.inc` to `Feeds.inc` and paste your Google Calendar *Secret address in iCal format* (Settings and sharing > Integrate calendar) as `GoogleURL`.
+- Setup: share the iCloud calendar as a Public Calendar, copy `calendar_widget/Feeds.example.inc` to `Feeds.inc`, and paste the link (with `webcal://` changed to `https://`) as `AppleURL`.

@@ -1,6 +1,6 @@
--- Today.lua: reads the Google .ics feed and renders today's events as a departure board.
+-- Today.lua: reads the Apple Calendar .ics feed and renders today's events as a departure board.
 
-local FEEDS = { 'google' }  -- add a name here + a WebParser measure in Today.ini for another calendar
+local FEEDS = { 'apple' }  -- add a name here + a WebParser measure in Today.ini for another calendar
 local MAX_ROWS = 8
 local Y0, RH, W = 74, 28, 360       -- first row top, row pitch, board width
 
@@ -293,7 +293,7 @@ function Update()
         show('E1', true)
         set('E1', 'FontColor', TEXT_DIM)
         set('E1', 'Y', Y0 + RH / 2)
-        set('E1', 'Text', loaded == 0 and 'ADD GOOGLEURL TO FEEDS.INC' or 'NOTHING SCHEDULED TODAY')
+        set('E1', 'Text', loaded == 0 and 'ADD APPLEURL TO FEEDS.INC' or 'NOTHING SCHEDULED TODAY')
         set('E1', 'ToolTipText', '')
         bottom = Y0 + RH
     end
