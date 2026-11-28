@@ -2,7 +2,7 @@
 
 local FEEDS = { 'apple' }  -- add a name here + a WebParser measure in Today.ini for another calendar
 local MAX_ROWS = 8
-local Y0, RH, W = 74, 28, 360       -- first row top, row pitch, board width
+local Y0, RH, W = 76, 32, 400       -- first row top, row pitch, board width
 
 local ALL = {}          -- parsed events from every feed
 local loaded = 0        -- feeds with usable data
@@ -288,7 +288,7 @@ function Update()
     if extra > 0 then bottom = bottom + 22 end
 
     -- empty and not-set-up states use the first title slot, widened since there's no status
-    set('E1', 'W', rows == 0 and 262 or 200)
+    set('E1', 'W', rows == 0 and 292 or 228)
     if rows == 0 then
         show('E1', true)
         set('E1', 'FontColor', TEXT_DIM)
